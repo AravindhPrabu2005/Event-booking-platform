@@ -1,37 +1,67 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserNavbar = () => {
-  const navigate = useNavigate()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.clear()
-    navigate('/login')
-  }
+    localStorage.clear();
+    navigate('/login');
+  };
 
   return (
-    <div className="relative">
-      <nav className="bg-white shadow-md p-4 z-10 relative rounded-b-xl">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold text-blue-700 transition duration-300 hover:scale-105">Event Booking</h1>
-          <button className="md:hidden text-blue-700 text-2xl" onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
-          </button>
-          <div className={`w-full md:w-auto md:flex items-center gap-6 mt-4 md:mt-0 transition-all duration-300 ease-in-out ${menuOpen ? 'block' : 'hidden'}`}>
-            <a href="/user/home" className="block text-gray-800 hover:text-blue-700 transition duration-300">Home</a>
-            <a href="/user/events" className="block text-gray-800 hover:text-blue-700 transition duration-300">Browse Events</a>
-            <a href="/user/tickets" className="block text-gray-800 hover:text-blue-700 transition duration-300">My Bookings</a>
-            <button onClick={handleLogout} className="mt-2 md:mt-0 bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition duration-300">Logout</button>
-          </div>
+    <nav className="bg-white shadow-md px-8 py-4 sticky top-0 z-40">
+      <div className="max-w-6xl mx-auto flex items-center justify-between">
+
+        <div className="flex items-center gap-3">
+          <img src="/logoCrop.png" alt="logo" className="h-10" />
+          <h1 className="text-2xl font-extrabold text-[#0A2A43]">KootamX</h1>
         </div>
-      </nav>
 
-      <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#ffffff" d="M0,0 C480,80 960,0 1440,80 L1440,0 L0,0 Z" />
-      </svg>
-    </div>
-  )
-}
+        <button
+          className="md:hidden text-3xl text-[#0A2A43]"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
 
-export default UserNavbar
+        <div
+          className={`flex-col md:flex-row md:flex items-center gap-8 absolute md:static left-0 w-full md:w-auto 
+            bg-white md:bg-transparent px-8 md:px-0 py-6 md:py-0 shadow-md md:shadow-none transition-all duration-300 
+            ${menuOpen ? 'top-16 opacity-100' : 'top-[-300px] opacity-0 md:opacity-100'}`}
+        >
+          <a
+            href="/user/home"
+            className="text-[#0A2A43] font-medium hover:text-[#FF7A00] transition"
+          >
+            Home
+          </a>
+
+          <a
+            href="/user/events"
+            className="text-[#0A2A43] font-medium hover:text-[#FF7A00] transition"
+          >
+            Browse Events
+          </a>
+
+          <a
+            href="/user/tickets"
+            className="text-[#0A2A43] font-medium hover:text-[#FF7A00] transition"
+          >
+            My Bookings
+          </a>
+
+          <button
+            onClick={handleLogout}
+            className="bg-[#FF7A00] text-white font-semibold px-5 py-2 rounded-lg hover:bg-[#e96c00] transition"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default UserNavbar;

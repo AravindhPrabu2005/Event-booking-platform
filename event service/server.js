@@ -1,30 +1,31 @@
+require('dotenv').config()
+
 const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
-const cors = require('cors')
 const cloudinary = require('cloudinary').v2
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
 
-const PORT = 8000
 const app = express()
 
-app.use(cors())
+const PORT = process.env.EVENT_PORT || 8000
+const MONGO_URI = 'mongodb://127.0.0.1:27017/event-service'
+
+const CLOUD_NAME = process.env.CLOUD_NAME
+const CLOUD_API_KEY = process.env.CLOUD_API_KEY
+const CLOUD_API_SECRET = process.env.CLOUD_API_SECRET
+
 app.use(express.json())
 
-mongoose.connect('mongodb://127.0.0.1:27017/event-service').then(() => {
-  console.log('Connected to MongoDB for Event Service')
-}).catch(err => {
-  console.error('MongoDB connection error:', err)
-})
+mongoose.connect(MONGO_URI)
 
-// Cloudinary Config
+// Cloudinary config
 cloudinary.config({
-  cloud_name: 'dpoufodoc',
-  api_key: '419293463141733',
-  api_secret: 'OWPBFCsRlJVDv8M8QAF4ODL6egk'
+  cloud_name: CLOUD_NAME,
+  api_key: CLOUD_API_KEY,
+  api_secret: CLOUD_API_SECRET
 })
 
-// Cloudinary Storage
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -48,7 +49,7 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model('Event', eventSchema)
 
-app.post('/api/events', upload.single('banner'), async (req, res) => {
+app.post('/events', upload.single('banner'), async (req, res) => {
   const event = new Event({
     name: req.body.name,
     seats: req.body.seats,
@@ -63,7 +64,7 @@ app.post('/api/events', upload.single('banner'), async (req, res) => {
   res.json(event)
 })
 
-app.get('/api/events', async (req, res) => {
+app.get('/events', async (req, res) => {
   const events = await Event.find()
   res.json(events)
 })

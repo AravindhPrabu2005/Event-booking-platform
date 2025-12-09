@@ -1,52 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import AdminNavbar from './AdminNavbar'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import AdminNavbar from './AdminNavbar';
+import axiosInstance from '../../axiosInstance';
 
 const BookingsLog = () => {
-  const [logs, setLogs] = useState([])
-  const { eventId } = useParams()
+  const [logs, setLogs] = useState([]);
+  const { eventId } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/event/${eventId}`)
-      .then(res => res.json())
-      .then(data => setLogs(data))
-  }, [eventId])
+    const fetchLogs = async () => {
+      try {
+        const res = await axiosInstance.get(`/bookings/event/${eventId}`);
+        setLogs(res.data);
+      } catch (err) {
+        console.error('Error fetching bookings:', err);
+      }
+    };
+    fetchLogs();
+  }, [eventId]);
 
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:5000/stream')
+    const eventSource = new EventSource('http://localhost:7000/api/bookings/stream');
 
     eventSource.onmessage = (event) => {
-      const newBooking = JSON.parse(event.data)
+      const newBooking = JSON.parse(event.data);
       if (newBooking.eventId === eventId) {
-        setLogs(prev => [newBooking, ...prev])
+        setLogs((prev) => [newBooking, ...prev]);
       }
-    }
+    };
 
     return () => {
-      eventSource.close()
-    }
-  }, [eventId])
+      eventSource.close();
+    };
+  }, [eventId]);
 
   return (
     <>
       <AdminNavbar />
-      <div className="min-h-screen bg-[#f1f5f9] px-6 py-12">
-        <h2 className="text-2xl font-bold text-purple-700 mb-6">Live Bookings for Event ID: {eventId}</h2>
-        <div className="space-y-4">
-          {logs.length > 0 ? logs.map(log => (
-            <div key={log.bookingId} className="bg-white shadow rounded-lg p-4 border-l-4 border-purple-600">
-              <p className="text-purple-700 font-semibold">Booking ID: {log.bookingId}</p>
-              <p className="text-gray-700">User ID: {log.userId}</p>
-              <p className="text-gray-700">Event ID: {log.eventId}</p>
-              <p className="text-gray-500 text-sm">{new Date(log._id?.toString().substring(0, 8) * 1000).toLocaleString()}</p>
-            </div>
-          )) : (
-            <p className="text-gray-600">No bookings yet for this event.</p>
+
+      <div className="min-h-screen bg-[#f5f7fa] px-6 py-12">
+        <h2 className="text-3xl font-extrabold text-[#0A2A43] mb-8">
+          Live Bookings for Event: {eventId}
+        </h2>
+
+        <div className="space-y-5">
+          {logs.length > 0 ? (
+            logs.map((log) => (
+              <div
+                key={log.bookingId}
+                className="bg-white shadow-lg rounded-xl border-l-4 border-[#FF7A00] p-6"
+              >
+                <p className="text-[#0A2A43] font-bold text-lg">
+                  Booking ID: {log.bookingId}
+                </p>
+
+                <div className="mt-2">
+                  <p className="text-gray-700">User ID: {log.userId}</p>
+                  <p className="text-gray-700">Event ID: {log.eventId}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-600 text-lg">No bookings yet for this event.</p>
           )}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default BookingsLog
+export default BookingsLog;

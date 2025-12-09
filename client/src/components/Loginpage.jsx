@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/login", {
+      const response = await axiosInstance.post("/auth/login", {
         email: formData.email,
         password: formData.password
       });
@@ -22,6 +22,7 @@ export default function LoginPage() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('id', response.data.id);
       localStorage.setItem('role', response.data.role);
+
       if (response.data.role === 'admin') {
         window.location.href = '/admin/home';
       } else {
@@ -33,37 +34,57 @@ export default function LoginPage() {
     }
   };
 
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <div className="w-full max-w-md p-10 rounded-3xl shadow-xl border border-gray-200 bg-white">
+
+        <h2 className="text-3xl font-extrabold text-center text-[#0A2A43] mb-2">
+          Welcome Back
+        </h2>
+
+        <p className="text-center text-gray-500 mb-8 text-sm">
+          Login to continue your journey with KootamX.
+        </p>
+
+        <form className="space-y-5" onSubmit={handleSubmit}>
+
+          <div>
+            <label className="block text-gray-700 mb-1 font-medium">Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:outline-none transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-1 font-medium">Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF7A00] focus:outline-none transition-all"
+            />
+          </div>
+
           <button
             type="submit"
-            className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full py-3 text-white bg-[#FF7A00] rounded-lg font-semibold hover:bg-[#e96c00] transition-all text-lg"
           >
             Login
           </button>
         </form>
-        <p className="text-center text-gray-600">
-          Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a>
+
+        <p className="text-center text-gray-600 mt-6">
+          Don't have an account?
+          <a href="/signup" className="text-[#0A2A43] font-semibold hover:underline ml-1">
+            Sign Up
+          </a>
         </p>
       </div>
     </div>

@@ -1,15 +1,16 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const cors = require('cors')
 
-const PORT = 5000
 const app = express()
+
+const PORT = process.env.BOOKING_PORT || 5000
+const MONGO_URI = process.env.BOOKING_MONGO_URI || 'mongodb://127.0.0.1:27017/bookings'
+
+app.use(express.json())
 
 let clients = []
 
 app.get('/stream', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Connection', 'keep-alive')
@@ -22,10 +23,7 @@ app.get('/stream', (req, res) => {
   })
 })
 
-app.use(express.json())
-app.use(cors())
-
-mongoose.connect('mongodb://127.0.0.1:27017/bookings')
+mongoose.connect(MONGO_URI)
 
 const bookingSchema = new mongoose.Schema({
   bookingId: String,
@@ -46,7 +44,7 @@ app.get('/all', async (req, res) => {
   res.json(list)
 })
 
-app.post('/api/book', async (req, res) => {
+app.post('/book', async (req, res) => {
   const { userId, eventId } = req.body
 
   const booking = new Booking({
@@ -61,12 +59,15 @@ app.post('/api/book', async (req, res) => {
   res.status(200).json({ message: 'Booking Successful' })
 })
 
+app.get('/test',(req,res)=>{
+  res.send("Booking service is up and running")
+})
 app.get('/event/:eventId', async (req, res) => {
   const list = await Booking.find({ eventId: req.params.eventId })
   res.json(list)
 })
 
-app.get('/:userId', async (req, res) => {
+app.get('/user/:userId', async (req, res) => {
   const list = await Booking.find({ userId: req.params.userId })
   res.json(list)
 })

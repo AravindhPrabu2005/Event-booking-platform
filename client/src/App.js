@@ -10,6 +10,7 @@ import Tickets from './components/user/Tickets';
 import Bookings from './components/admin/Bookings';
 import EventCreation from './components/admin/EventCreation';
 import BookingsLog from './components/admin/BookingsLog';
+import Lander from './components/Lander';
 
 const PrivateRoute = ({ element }) => {
   const isAuthenticated = localStorage.getItem('token');
@@ -21,6 +22,7 @@ function App() {
     <Router>
       <Routes>
         {/* Common routes */}
+        <Route path="/" element={<Lander />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/user/signup" element={<SignupPage />} />
         <Route path="/admin/signup" element={<AdminSignupPage/> } />
