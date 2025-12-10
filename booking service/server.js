@@ -1,10 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const Serverless = require('serverless-http')
 
 const app = express()
 
 const PORT = process.env.BOOKING_PORT || 5000
-const MONGO_URI = process.env.BOOKING_MONGO_URI || 'mongodb://127.0.0.1:27017/bookings'
+// const MONGO_URI = process.env.BOOKING_MONGO_URI || 'mongodb://127.0.0.1:27017/bookings'
+const MONGO_URI = 'mongodb+srv://aravindhprabu2005:aravindhprabu2005@cluster0.9swrpuo.mongodb.net/?appName=Cluster0'
 
 app.use(express.json())
 
@@ -72,6 +74,8 @@ app.get('/user/:userId', async (req, res) => {
   res.json(list)
 })
 
-app.listen(PORT, () => {
-  console.log(`Booking service is running on port ${PORT}`)
-})
+// app.listen(PORT, () => {
+//   console.log(`Booking service is running on port ${PORT}`)
+// })
+
+module.exports.handler = serverless(app);

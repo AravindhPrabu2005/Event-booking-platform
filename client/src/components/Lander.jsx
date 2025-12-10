@@ -29,14 +29,14 @@ export default function Lander() {
           </button>
 
           <button
-            onClick={() => navigate("/user-signin")}
+            onClick={() => navigate("/user/signup")}
             className="px-6 py-2 rounded-lg text-[#0A2A43] border border-[#0A2A43] font-semibold hover:bg-[#0A2A43] hover:text-white transition-all"
           >
             Signup as User
           </button>
 
           <button
-            onClick={() => navigate("/admin-signin")}
+            onClick={() => navigate("/admin/signup")}
             className="px-6 py-2 rounded-lg text-[#0A2A43] border border-[#0A2A43] font-semibold hover:bg-[#0A2A43] hover:text-white transition-all"
           >
             Signup as Admin
@@ -64,7 +64,7 @@ export default function Lander() {
             </button>
 
             <button
-              onClick={() => navigate("/user-signin")}
+              onClick={() => navigate("/user/signup")}
               className="px-8 py-3 border border-[#0A2A43] text-[#0A2A43] rounded-lg font-semibold hover:bg-[#0A2A43] hover:text-white transition-all"
             >
               Explore Events

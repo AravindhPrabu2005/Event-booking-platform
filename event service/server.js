@@ -5,11 +5,13 @@ const mongoose = require('mongoose')
 const multer = require('multer')
 const cloudinary = require('cloudinary').v2
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
+const serverless = require
 
 const app = express()
 
 const PORT = process.env.EVENT_PORT || 8000
-const MONGO_URI = 'mongodb://127.0.0.1:27017/event-service'
+// const MONGO_URI = 'mongodb://127.0.0.1:27017/event-service'
+const MONGO_URI = 'mongodb+srv://aravindhprabu2005:aravindhprabu2005@cluster0.hliqaha.mongodb.net/?appName=Cluster0'
 
 const CLOUD_NAME = process.env.CLOUD_NAME
 const CLOUD_API_KEY = process.env.CLOUD_API_KEY
@@ -69,6 +71,8 @@ app.get('/events', async (req, res) => {
   res.json(events)
 })
 
-app.listen(PORT, () => {
-  console.log(`Event service is running on port ${PORT}`)
-})
+// app.listen(PORT, () => {
+//   console.log(`Event service is running on port ${PORT}`)
+// })
+
+module.exports.handler = serverless(app);
