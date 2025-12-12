@@ -3,15 +3,24 @@ const axios = require('axios');
 const cors = require('cors');
 const multer = require('multer');
 const FormData = require('form-data');
-
+require('dotenv').config()
 const app = express();
 
-const AUTH_SERVICE = 'http://localhost:4000';
-const BOOKING_SERVICE = 'http://localhost:5000';
-const EVENT_SERVICE = 'http://localhost:8000';
+// const AUTH_SERVICE = 'http://localhost:4000';
+// const BOOKING_SERVICE = 'http://localhost:5000';
+// const EVENT_SERVICE = 'http://localhost:8000';
+
+const AUTH_SERVICE = process.env.AUTH_SERVICE;
+const BOOKING_SERVICE = process.env.BOOKING_SERVICE;
+const EVENT_SERVICE = process.env.EVENT_SERVICE;
+
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/test",(req,res)=>{
+  res.send("I am working!");
+})
 
 // ---------------- AUTH ROUTES ----------------
 app.post('/api/auth/signup', async (req, res) => {
@@ -30,6 +39,10 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // ---------------- BOOKING ROUTES ----------------
+app.get('/api/bookings/test', async(req,res)=>{
+  const response = await axios.get(`${BOOKING_SERVICE}/test`);
+  res.json(response.data);
+})
 app.post('/api/bookings/book', async (req, res) => {
   const response = await axios.post(`${BOOKING_SERVICE}/book`, req.body);
   res.json(response.data);

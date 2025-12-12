@@ -11,7 +11,7 @@ const app = express()
 
 const PORT = process.env.EVENT_PORT || 8000
 // const MONGO_URI = 'mongodb://127.0.0.1:27017/event-service'
-const MONGO_URI = 'mongodb+srv://aravindhprabu2005:aravindhprabu2005@cluster0.hliqaha.mongodb.net/?appName=Cluster0'
+const MONGO_URI = process.env.MONGO_URI
 
 const CLOUD_NAME = process.env.CLOUD_NAME
 const CLOUD_API_KEY = process.env.CLOUD_API_KEY
@@ -19,7 +19,7 @@ const CLOUD_API_SECRET = process.env.CLOUD_API_SECRET
 
 app.use(express.json())
 
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI).then(()=>{console.log("event service connected to MongoDB")})
 
 // Cloudinary config
 cloudinary.config({

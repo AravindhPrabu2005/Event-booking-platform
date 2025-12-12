@@ -1,12 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const Serverless = require('serverless-http')
+require('dotenv').config();
 
 const app = express()
 
 const PORT = process.env.BOOKING_PORT || 5000
 // const MONGO_URI = process.env.BOOKING_MONGO_URI || 'mongodb://127.0.0.1:27017/bookings'
-const MONGO_URI = 'mongodb+srv://aravindhprabu2005:aravindhprabu2005@cluster0.9swrpuo.mongodb.net/?appName=Cluster0'
+const MONGO_URI = process.env.MONGO_URI
 
 app.use(express.json())
 
@@ -25,7 +26,7 @@ app.get('/stream', (req, res) => {
   })
 })
 
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI).then(()=>{console.log("booking service connected to MongoDB")}).catch((err)=>{console.log(`mongodb error${err}`)});
 
 const bookingSchema = new mongoose.Schema({
   bookingId: String,

@@ -3,18 +3,19 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const serverless = require('serverless-http')
+require('dotenv').config();
 
 const app = express()
 
 const PORT = process.env.AUTH_PORT || 4000
-// const MONGO_URI = process.env.AUTH_MONGO_URI || 'mongodb://127.0.0.1:27017/auth-service'
-const MONGO_URI = 'mongodb+srv://aravindhprabu2005:aravindhprabu2005@cluster0.untm56s.mongodb.net/?appName=Cluster0'
-const JWT_SECRET = process.env.JWT_SECRET || 'jwtSecret'
+// const MONGO_URI = 'mongodb://127.0.0.1:27017/auth-service'
+const MONGO_URI = process.env.MONGO_URI
+const JWT_SECRET = 'jwtSecret'
 
 app.use(express.json())
 
 mongoose.connect(MONGO_URI).then(() => {
-  console.log('Connected to MongoDB')
+  console.log('Auth service connected to MongoDB')
 }).catch(err => {
   console.error('MongoDB connection error:', err)
 })
