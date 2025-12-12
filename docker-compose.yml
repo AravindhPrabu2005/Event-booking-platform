@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  auth:
+    build: ./auth-service
+    ports:
+      - "4000:4000"
+
+  booking:
+    build: ./booking-service
+    ports:
+      - "5000:5000"
+
+  event:
+    build: ./event-service
+    ports:
+      - "8000:8000"
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "7000:7000"
+    depends_on:
+      - auth
+      - booking
+      - event
