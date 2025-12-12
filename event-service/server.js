@@ -71,8 +71,6 @@ app.get('/events', async (req, res) => {
   res.json(events)
 })
 
-// app.listen(PORT, () => {
-//   console.log(`Event service is running on port ${PORT}`)
-// })
-
-module.exports.handler = serverless(app);
+app.listen(PORT, () => {
+  console.log(`Event service is running on port ${PORT}`)
+})

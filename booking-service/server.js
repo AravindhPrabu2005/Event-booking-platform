@@ -74,8 +74,6 @@ app.get('/user/:userId', async (req, res) => {
   res.json(list)
 })
 
-// app.listen(PORT, () => {
-//   console.log(`Booking service is running on port ${PORT}`)
-// })
-
-module.exports.handler = serverless(app);
+app.listen(PORT, () => {
+  console.log(`Booking service is running on port ${PORT}`)
+})

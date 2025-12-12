@@ -83,8 +83,6 @@ app.post('/login', async (req, res) => {
   }
 })
 
-// app.listen(PORT, () => {
-//   console.log(`Auth service is running on port ${PORT}`)
-// })
-
-module.exports.handler = serverless(app);
+app.listen(PORT, () => {
+  console.log(`Auth service is running on port ${PORT}`)
+})
