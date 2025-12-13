@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/test",(req,res)=>{
-  res.send("I am working!");
+  res.send("Iruken da dei!");
 })
 
 // ---------------- AUTH ROUTES ----------------
